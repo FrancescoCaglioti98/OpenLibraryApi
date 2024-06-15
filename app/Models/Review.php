@@ -17,4 +17,15 @@ class Review extends Model
 
     public $timestamps = true;
 
+    protected $fillable = [
+        "work_id",
+        "review",
+        "score",
+        "work_info"
+    ];
+
+    protected $casts = [
+        "work_info" => "array"
+    ];
+
 }
