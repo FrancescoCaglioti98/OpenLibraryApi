@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
 
-            $table->string( "work_id" )->primary();
+            $table->string('work_id')->primary();
 
-            $table->text( "review" );
-            $table->integer( "score" );
+            $table->text('review');
+            $table->integer('score');
 
-            $table->json( "work_info" );
+            $table->json('work_info');
 
             $table->timestamps();
         });

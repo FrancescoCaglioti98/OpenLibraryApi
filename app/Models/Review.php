@@ -9,23 +9,24 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $table = "reviews";
+    protected $table = 'reviews';
 
-    protected $primaryKey = "work_id";
+    protected $primaryKey = 'work_id';
+
     public $incrementing = false;
-    protected $keyType = "string";
+
+    protected $keyType = 'string';
 
     public $timestamps = true;
 
     protected $fillable = [
-        "work_id",
-        "review",
-        "score",
-        "work_info"
+        'work_id',
+        'review',
+        'score',
+        'work_info',
     ];
 
     protected $casts = [
-        "work_info" => "array"
+        'work_info' => 'array',
     ];
-
 }

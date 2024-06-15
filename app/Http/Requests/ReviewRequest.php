@@ -22,20 +22,20 @@ class ReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "work_id" => [
-                "required",
-                "string",
+            'work_id' => [
+                'required',
+                'string',
             ],
-            "review" => [
-                "required",
-                "string"
+            'review' => [
+                'required',
+                'string',
             ],
-            "score" => [
-                "required",
-                "numeric",
-                "min:0",
-                "max:6"
-            ]
+            'score' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:6',
+            ],
         ];
     }
 }

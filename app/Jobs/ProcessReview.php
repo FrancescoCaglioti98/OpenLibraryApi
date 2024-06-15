@@ -20,8 +20,8 @@ class ProcessReview implements ShouldQueue
         private readonly string $workID,
         private readonly string $review,
         private readonly string $score,
-    )
-    {}
+    ) {
+    }
 
     /**
      * Execute the job.
@@ -29,13 +29,13 @@ class ProcessReview implements ShouldQueue
     public function handle(): void
     {
 
-        sleep( 20 );
+        sleep(20);
         //Per fare qualche test adesso vado solo ad inserirlo in tabella
         $review = Review::create([
-            "work_id" => $this->workID,
-            "review" => $this->review,
-            "score" => $this->score,
-            "work_info" => []
+            'work_id' => $this->workID,
+            'review' => $this->review,
+            'score' => $this->score,
+            'work_info' => [],
         ]);
 
     }
