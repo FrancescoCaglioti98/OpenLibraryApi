@@ -14,12 +14,13 @@ class OpenLibrarySearch extends Controller
 
         $searchTerm = [
             'q' => $request->input('searchTerm'),
-            "fields" => 'key,title,author_name'
+            'fields' => 'key,title,author_name',
         ];
 
         $response = CurlRequest::Get($_ENV['OPENLIBRARY_SEARCH_ENDPOINT'], $searchTerm);
 
-        $bodyResponse = $response["body"];
-        return OpenLibrarySearchResource::collection( $bodyResponse->docs );
+        $bodyResponse = $response['body'];
+
+        return OpenLibrarySearchResource::collection($bodyResponse->docs);
     }
 }
