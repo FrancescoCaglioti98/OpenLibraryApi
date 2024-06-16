@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
 
-            $table->string('work_id');
+            $table->string('openlibrary_work_id', 15);
             $table->text('review');
             $table->integer('score');
 
