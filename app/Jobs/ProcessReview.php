@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Classes\OpenLibraryClass;
 use App\Http\Resources\WorkResource;
+use App\Models\Author;
 use App\Models\Review;
 use App\Models\Work;
 use Illuminate\Bus\Queueable;
@@ -17,8 +18,6 @@ class ProcessReview implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private OpenLibraryClass $openLibraryClass;
-
     /**
      * Create a new job instance.
      */
@@ -30,16 +29,16 @@ class ProcessReview implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
 
-        $this->openLibraryClass = new OpenLibraryClass();
+        $openLibraryClass = new OpenLibraryClass();
 
         $reviewInfo = Review::where('id', $this->reviewID)->first();
         Review::where('id', $this->reviewID)->update(['review_status' => 'WORKING']);
 
         //First Step: Get all the info from the WORK id
-        $workInfo = $this->openLibraryClass->getWorkInfo($reviewInfo->openlibrary_work_id);
+        $workInfo = $openLibraryClass->getWorkInfo($reviewInfo->openlibrary_work_id);
 
         //Second step: Create a record for the new Work
         $work = Work::create([
@@ -102,14 +101,68 @@ class ProcessReview implements ShouldQueue
             ]);
         }
 
-        //$workReturn = Work::where( "id", $work->id )->get();
-        //return WorkResource::collection( $workReturn );
-
         //Then is time for the authors section
         $authors = $workInfo->authors ?? [];
-        foreach ($authors as $author) {
+        foreach ($authors as $workAuthor) {
+
+            $openLibraryAuthorID = str_replace('/authors/', '', $workAuthor->author->key);
+
+            //First of all i need to check if the given author is already present in the author table
+            $savedAuthor = Author::where( "openlibrary_author_id", $openLibraryAuthorID )->first();
+            if( !empty( $savedAuthor ) ) {
+                $work->setAuthor( $savedAuthor->id );
+                continue;
+            }
+
+            //If not the first thing to do is to go and get all the author info
+            $authorInfo = $openLibraryClass->getAuthorInfo( $openLibraryAuthorID );
+
+            //Create a record for the new author
+            $author = Author::create([
+                "openlibrary_author_id" => $openLibraryAuthorID,
+                "name" => $authorInfo->name,
+                "bio" => $authorInfo->name,
+                "birth_date" => date( "Y-m-d", strtotime( "birth_date" ) ) ?? null,
+                "death_date" => date( "Y-m-d", strtotime( "death_date" ) ) ?? null,
+            ]);
+
+            //Save all the author photos
+            foreach ($authorInfo->photos as $photo) {
+
+                // For some reason some of the photos are -1 from the API endpoint
+                if( $photo == -1 ) {
+                    continue;
+                }
+
+                DB::table('author_photos')->insert([
+                    'author_id' => $author->id,
+                    'photo_id' => $photo,
+                ]);
+            }
+
+            //Save all the author alternative names
+            foreach ($authorInfo->alternate_names as $alternate_name) {
+                DB::table('author_alternative_names')->insert([
+                    'author_id' => $author->id,
+                    'name' => $alternate_name,
+                ]);
+            }
+
+            //Save all the useful links
+            $usefulLinks = $authorInfo->links ?? [];
+            foreach ( $usefulLinks as $link ) {
+                DB::table('author_useful_links')->insert([
+                    'author_id' => $author->id,
+                    'title' => $link->title,
+                    "link" => $link->link
+                ]);
+            }
+
+            $work->setAuthor( $author->id );
 
         }
+
+        Review::where('id', $this->reviewID)->update(['review_status' => 'DONE']);
 
     }
 }

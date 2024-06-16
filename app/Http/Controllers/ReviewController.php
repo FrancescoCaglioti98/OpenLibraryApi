@@ -6,10 +6,11 @@ use App\Classes\CurlRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Jobs\ProcessReview;
 use App\Models\Review;
+use Illuminate\Http\JsonResponse;
 
 class ReviewController extends Controller
 {
-    public function postReview(ReviewRequest $reviewRequest)
+    public function postReview(ReviewRequest $reviewRequest): JsonResponse
     {
 
         $values = $reviewRequest->validated();
@@ -27,10 +28,6 @@ class ReviewController extends Controller
 
         // I need to verify if the WorkID has already a review
         $result = Review::where('openlibrary_work_id', $values['work_id'])->first();
-
-        //DEBUG
-        $result = [];
-
         if (! empty($result)) {
             return response()->json(
                 [
@@ -41,7 +38,6 @@ class ReviewController extends Controller
         }
 
         // Insert in the review table
-        //DEBUG
         $review = Review::create([
             'openlibrary_work_id' => $values['work_id'],
             'review' => $values['review'],
@@ -54,10 +50,6 @@ class ReviewController extends Controller
         $reviewID = $reviewID->id;
 
         $newJob = new ProcessReview($reviewID);
-
-        //JustFor test porpuse
-        return $newJob->handle();
-
         dispatch($newJob);
 
         return response()->json(

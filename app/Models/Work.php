@@ -57,8 +57,8 @@ class Work extends Model
                 $returnCovers = [];
                 foreach ($covers as $cover) {
                     $singleCover = [];
-                    foreach (OpenLibraryClass::$coverSizes as $key => $coverSize) {
-                        $singleCover[$key] = OpenLibraryClass::$coverLink.$cover->cover.'-'.$coverSize.OpenLibraryClass::$coverExtension;
+                    foreach (OpenLibraryClass::$imageSize as $key => $coverSize) {
+                        $singleCover[$key] = OpenLibraryClass::$coverLink.$cover->cover.'-'.$coverSize.OpenLibraryClass::$imageExtension;
                     }
                     $returnCovers[] = $singleCover;
                 }
@@ -145,4 +145,13 @@ class Work extends Model
             }
         );
     }
+
+    public function setAuthor( $authorID ): void
+    {
+        DB::table( "works_to_authors" )->insert([
+            "work_id" => $this->id,
+            "author_id" => $authorID
+        ]);
+    }
+
 }

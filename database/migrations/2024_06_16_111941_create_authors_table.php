@@ -30,6 +30,11 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('authors');
             $table->string('name', 250);
         });
+        Schema::create( 'author_useful_links', function (Blueprint $table) {
+            $table->foreignId('author_id')->constrained('authors');
+            $table->string("title", 50)->nullable( false );
+            $table->string( "link", 100 )->nullable( false );
+        } );
     }
 
     /**
@@ -37,8 +42,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('authors');
-        Schema::dropIfExists('author_photos');
+        Schema::dropIfExists('author_useful_links');
         Schema::dropIfExists('author_alternative_names');
+        Schema::dropIfExists('author_photos');
+        Schema::dropIfExists('authors');
     }
 };
