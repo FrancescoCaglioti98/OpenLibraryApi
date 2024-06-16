@@ -19,5 +19,4 @@ class Review extends Model
         'score',
         'review_status',
     ];
-
 }

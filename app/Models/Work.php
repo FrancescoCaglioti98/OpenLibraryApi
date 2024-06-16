@@ -13,14 +13,15 @@ class Work extends Model
     use HasFactory;
 
     public $timestamps = true;
-    protected $table = "works";
+
+    protected $table = 'works';
+
     protected $fillable = [
         'openlibrary_work_id',
         'title',
         'description',
-        'first_publish'
+        'first_publish',
     ];
-
 
     public function links(): Attribute
     {
@@ -28,16 +29,17 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $links = DB::table('work_links')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnLinks = [];
                 foreach ($links as $link) {
                     $returnLinks[] = [
-                        "title" => $link->title,
-                        "link" => $link->link
+                        'title' => $link->title,
+                        'link' => $link->link,
                     ];
                 }
+
                 return $returnLinks;
             }
         );
@@ -49,17 +51,18 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $covers = DB::table('work_covers')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnCovers = [];
                 foreach ($covers as $cover) {
                     $singleCover = [];
                     foreach (OpenLibraryClass::$coverSizes as $key => $coverSize) {
-                        $singleCover[$key] = OpenLibraryClass::$coverLink . $cover->cover . "-" . $coverSize . OpenLibraryClass::$coverExtension;
+                        $singleCover[$key] = OpenLibraryClass::$coverLink.$cover->cover.'-'.$coverSize.OpenLibraryClass::$coverExtension;
                     }
                     $returnCovers[] = $singleCover;
                 }
+
                 return $returnCovers;
             }
         );
@@ -72,13 +75,14 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $subjectPeoples = DB::table('work_subject_peoples')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnSubjectPeoples = [];
                 foreach ($subjectPeoples as $subjectPeople) {
                     $returnSubjectPeoples[] = $subjectPeople->people;
                 }
+
                 return $returnSubjectPeoples;
             }
         );
@@ -90,13 +94,14 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $subjects = DB::table('work_subjects')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnSubjects = [];
                 foreach ($subjects as $subject) {
                     $returnSubjects[] = $subject->subject;
                 }
+
                 return $returnSubjects;
             }
         );
@@ -109,13 +114,14 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $subjectTimes = DB::table('work_subject_times')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnSubjectTimes = [];
                 foreach ($subjectTimes as $subjectTime) {
                     $returnSubjectTimes[] = $subjectTime->time;
                 }
+
                 return $returnSubjectTimes;
             }
         );
@@ -127,16 +133,16 @@ class Work extends Model
             get: function ($value, $attributes) {
 
                 $subjectPlaces = DB::table('work_subject_places')
-                    ->where('work_id', $attributes["id"])
+                    ->where('work_id', $attributes['id'])
                     ->get();
 
                 $returnSubjectPlaces = [];
                 foreach ($subjectPlaces as $subjectPlace) {
                     $returnSubjectPlaces[] = $subjectPlace->place;
                 }
+
                 return $returnSubjectPlaces;
             }
         );
     }
-
 }

@@ -6,8 +6,6 @@ use App\Classes\CurlRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Jobs\ProcessReview;
 use App\Models\Review;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
@@ -27,15 +25,13 @@ class ReviewController extends Controller
             );
         }
 
-
-
         // I need to verify if the WorkID has already a review
         $result = Review::where('openlibrary_work_id', $values['work_id'])->first();
 
         //DEBUG
         $result = [];
 
-        if (! empty($result) ) {
+        if (! empty($result)) {
             return response()->json(
                 [
                     'error' => 'work_id already reviewed',
@@ -50,18 +46,17 @@ class ReviewController extends Controller
             'openlibrary_work_id' => $values['work_id'],
             'review' => $values['review'],
             'score' => $values['score'],
-            'review_status' => "IN QUEUE",
+            'review_status' => 'IN QUEUE',
         ]);
 
         //After the insert get the new created id and dispatch to the Job queue for later work
-        $reviewID = Review::where( "openlibrary_work_id", $values["work_id"] )->first();
+        $reviewID = Review::where('openlibrary_work_id', $values['work_id'])->first();
         $reviewID = $reviewID->id;
 
-        $newJob = new ProcessReview( $reviewID );
+        $newJob = new ProcessReview($reviewID);
 
         //JustFor test porpuse
         return $newJob->handle();
-
 
         dispatch($newJob);
 

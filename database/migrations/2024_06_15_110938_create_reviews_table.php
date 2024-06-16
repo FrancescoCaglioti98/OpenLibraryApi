@@ -19,10 +19,10 @@ return new class extends Migration
             $table->text('review');
             $table->integer('score');
 
-            $table->enum( 'review_status', [
-                "IN QUEUE",
-                "WORKING",
-                "DONE"
+            $table->enum('review_status', [
+                'IN QUEUE',
+                'WORKING',
+                'DONE',
             ]);
 
             $table->timestamps();
