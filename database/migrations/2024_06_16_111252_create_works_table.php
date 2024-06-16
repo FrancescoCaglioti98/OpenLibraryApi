@@ -43,7 +43,10 @@ return new class extends Migration
             $table->foreignId( "work_id" )->constrained( "works" );
             $table->string( "time", 100 )->nullable( false );
         });
-
+        Schema::create( "work_subject_places", function( Blueprint $table ) {
+            $table->foreignId( "work_id" )->constrained( "works" );
+            $table->string( "place", 100 )->nullable( false );
+        });
     }
 
     /**
@@ -51,6 +54,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('work_subject_places');
         Schema::dropIfExists('work_subject_times');
         Schema::dropIfExists('work_subjects');
         Schema::dropIfExists('work_subject_peoples');

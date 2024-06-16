@@ -11,16 +11,10 @@ class Review extends Model
 
     protected $table = 'reviews';
 
-    protected $primaryKey = 'work_id';
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
-
     public $timestamps = true;
 
     protected $fillable = [
-        'work_id',
+        'openlibrary_work_id',
         'review',
         'score',
         'review_status',
