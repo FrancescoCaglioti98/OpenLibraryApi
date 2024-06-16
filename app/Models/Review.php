@@ -23,10 +23,7 @@ class Review extends Model
         'work_id',
         'review',
         'score',
-        'work_info',
+        'review_status',
     ];
 
-    protected $casts = [
-        'work_info' => 'array',
-    ];
 }

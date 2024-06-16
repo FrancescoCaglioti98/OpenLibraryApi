@@ -6,11 +6,12 @@ use App\Classes\CurlRequest;
 use App\Http\Requests\ReviewRequest;
 use App\Jobs\ProcessReview;
 use App\Models\Review;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
-    public function postReview(ReviewRequest $reviewRequest)
+    public function postReview(ReviewRequest $reviewRequest): JsonResponse
     {
 
         $values = $reviewRequest->validated();
@@ -26,9 +27,11 @@ class ReviewController extends Controller
             );
         }
 
+
+
         // I need to verify if the WorkID has already a review
         $result = Review::where('work_id', $values['work_id'])->first();
-        if (! empty($result)) {
+        if (! empty($result) ) {
             return response()->json(
                 [
                     'error' => 'work_id already reviewed',
@@ -37,27 +40,27 @@ class ReviewController extends Controller
             );
         }
 
-        // If the workID exists, i will dispatch the new "Job" to the queue for later work
-        // And then respond with a status code of 201
-        $newJob = new ProcessReview(
-            $values['work_id'],
-            $values['review'],
-            $values['score']
-        );
-        dispatch($newJob);
+        // Insert in the review table
+        $review = Review::create([
+            'work_id' => $values['work_id'],
+            'review' => $values['review'],
+            'score' => $values['score'],
+            'review_status' => "IN QUEUE",
+        ]);
 
-        //        //After the dispatch i will need to get from the queue table the ID for the new job addedd
-        //        $result = DB::table("jobs")
-        //            ->where( "payload", "like", "%" . $values["work_id"] . "%" )
-        //            ->orderBy( "id", "desc" )
-        //            ->pluck("id")
-        //            ->first();
+        //After the insert get the new created id and dispatch to the Job queue for later work
+        $reviewID = Review::where( "work_id", $values["work_id"] )->first();
+        $reviewID = $reviewID->id;
+
+        $newJob = new ProcessReview( $reviewID );
+        dispatch($newJob);
 
         return response()->json(
             [
                 'message' => 'Job Created',
-                'work_id' => $values['work_id'],
-            ]
+                'review_identifier' => $reviewID,
+            ],
+            201
         );
 
     }

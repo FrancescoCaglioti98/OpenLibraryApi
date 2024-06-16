@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
 
-            $table->string('work_id')->primary();
+            $table->id();
 
+            $table->string('work_id');
             $table->text('review');
             $table->integer('score');
 
-            $table->json('work_info');
+            $table->enum( 'review_status', [
+                "IN QUEUE",
+                "WORKING",
+                "DONE"
+            ]);
 
             $table->timestamps();
         });

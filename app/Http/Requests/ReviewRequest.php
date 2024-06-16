@@ -33,7 +33,7 @@ class ReviewRequest extends FormRequest
             'score' => [
                 'required',
                 'numeric',
-                'min:0',
+                'min:1',
                 'max:6',
             ],
         ];
