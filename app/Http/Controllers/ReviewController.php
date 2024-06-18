@@ -18,7 +18,7 @@ class ReviewController extends Controller
 
         //First of all i need to check that the WorkID is a valid identifier
         $existWorkID = $this->checkIfValidWorkID($values['work_id']);
-        if (! $existWorkID) {
+        if (!$existWorkID) {
             return response()->json(
                 [
                     'error' => 'Wrong work_id given',
@@ -29,7 +29,7 @@ class ReviewController extends Controller
 
         // I need to verify if the WorkID has already a review
         $result = Review::where('openlibrary_work_id', $values['work_id'])->first();
-        if (! empty($result)) {
+        if (!empty($result)) {
             return response()->json(
                 [
                     'error' => 'work_id already reviewed',
@@ -63,6 +63,21 @@ class ReviewController extends Controller
 
     }
 
+    private function checkIfValidWorkID(string $workID): bool
+    {
+
+        $url = $_ENV['OPENLIBRARY_WORK_INFO_ENDPOINT'] . $workID . '.json';
+
+        $request = CurlRequest::Get($url, []);
+
+        if ($request['httpResponseCode'] != 200) {
+            return false;
+        }
+
+        return true;
+
+    }
+
     public function getReview(int $reviewID): JsonResponse|ReviewResource
     {
 
@@ -88,18 +103,42 @@ class ReviewController extends Controller
         return new ReviewResource($review);
     }
 
-    private function checkIfValidWorkID(string $workID): bool
+    public function putReview(int $reviewID, ReviewRequest $reviewRequest): JsonResponse
     {
 
-        $url = $_ENV['OPENLIBRARY_WORK_INFO_ENDPOINT'].$workID.'.json';
-
-        $request = CurlRequest::Get($url, []);
-
-        if ($request['httpResponseCode'] != 200) {
-            return false;
+        $review = Review::where('id', $reviewID)->first();
+        if (empty($review)) {
+            return response()->json(
+                [
+                    'Unknown reviewID',
+                ],
+                404
+            );
         }
 
-        return true;
+        $validatedValues = $reviewRequest->validated();
+
+        $updated = $review->update([
+            'review' => $validatedValues['review'],
+            'score' => $validatedValues['score'],
+            'openlibrary_work_id' => $validatedValues['work_id'],
+        ]);
+
+        if (!$updated) {
+            return response()->json(
+                [
+                    'Error in the Review Update',
+                ],
+                500
+            );
+        }
+
+        return response()->json(
+            [
+                'Review Updated',
+            ],
+            200
+        );
 
     }
 }
