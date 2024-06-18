@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Author extends Model
@@ -15,14 +14,15 @@ class Author extends Model
     use HasFactory;
 
     public $timestamps = true;
+
     protected $table = 'authors';
 
     protected $fillable = [
-        "openlibrary_author_id",
-        "name",
-        "bio",
-        "birth_date",
-        "death_date",
+        'openlibrary_author_id',
+        'name',
+        'bio',
+        'birth_date',
+        'death_date',
     ];
 
     public function photos(): Attribute
@@ -37,8 +37,8 @@ class Author extends Model
                 $returnPhotos = [];
                 foreach ($photos as $photo) {
                     $photoSize = [];
-                    foreach ( OpenLibraryClass::$imageSize as $key => $size) {
-                        $photoSize[$key] =     OpenLibraryClass::$coverLink.$photo->photo_id.'-'.$size.OpenLibraryClass::$imageExtension;
+                    foreach (OpenLibraryClass::$imageSize as $key => $size) {
+                        $photoSize[$key] = OpenLibraryClass::$coverLink.$photo->photo_id.'-'.$size.OpenLibraryClass::$imageExtension;
                     }
                     $returnPhotos[] = $photoSize;
                 }
@@ -79,8 +79,8 @@ class Author extends Model
                 $returnLinks = [];
                 foreach ($links as $link) {
                     $returnLinks[] = [
-                        "title" => $link->title,
-                        "link" => $link->link
+                        'title' => $link->title,
+                        'link' => $link->link,
                     ];
                 }
 
@@ -91,7 +91,6 @@ class Author extends Model
 
     public function works(): BelongsToMany
     {
-        return $this->belongsToMany( Work::class );
+        return $this->belongsToMany(Work::class);
     }
-
 }

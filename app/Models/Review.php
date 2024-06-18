@@ -25,5 +25,4 @@ class Review extends Model
     {
         return $this->hasOne(Work::class, 'openlibrary_work_id', 'openlibrary_work_id');
     }
-
 }

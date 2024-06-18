@@ -16,29 +16,29 @@ class ReviewResource extends JsonResource
     {
 
         $workInfo = [
-            "id" => $this->work->id,
-            "book" => $this->work->title,
-            "openlibrary_id" => $this->work->openlibrary_work_id,
-            "link" => $_ENV["APP_URL"] . "/api/book/" . $this->work->id
+            'id' => $this->work->id,
+            'book' => $this->work->title,
+            'openlibrary_id' => $this->work->openlibrary_work_id,
+            'link' => $_ENV['APP_URL'].'/api/book/'.$this->work->id,
         ];
 
         $authors = [];
-        foreach ( $this->work->authors as $author ) {
+        foreach ($this->work->authors as $author) {
             $authors[] = [
-                "id" => $author->id,
-                "name" => $author->name,
-                "openlibrary_id" => $author->openlibrary_author_id,
-                "link" => $_ENV["APP_URL"] . "/api/author/" . $author->id
+                'id' => $author->id,
+                'name' => $author->name,
+                'openlibrary_id' => $author->openlibrary_author_id,
+                'link' => $_ENV['APP_URL'].'/api/author/'.$author->id,
             ];
         }
 
         return [
-            "id" => $this->id,
-            "work_id" => $this->openlibrary_work_id,
-            "review" => $this->review,
-            "score" => $this->score,
-            "work_info" => $workInfo,
-            "authors_info" => $authors
+            'id' => $this->id,
+            'work_id' => $this->openlibrary_work_id,
+            'review' => $this->review,
+            'score' => $this->score,
+            'work_info' => $workInfo,
+            'authors_info' => $authors,
         ];
     }
 }

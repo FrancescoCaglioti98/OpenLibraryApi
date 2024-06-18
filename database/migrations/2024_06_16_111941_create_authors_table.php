@@ -30,11 +30,11 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('authors');
             $table->string('name', 250);
         });
-        Schema::create( 'author_useful_links', function (Blueprint $table) {
+        Schema::create('author_useful_links', function (Blueprint $table) {
             $table->foreignId('author_id')->constrained('authors');
-            $table->string("title", 50)->nullable( false );
-            $table->string( "link", 100 )->nullable( false );
-        } );
+            $table->string('title', 50)->nullable(false);
+            $table->string('link', 100)->nullable(false);
+        });
     }
 
     /**

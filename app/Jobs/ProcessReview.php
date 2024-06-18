@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Classes\OpenLibraryClass;
-use App\Http\Resources\WorkResource;
 use App\Models\Author;
 use App\Models\Review;
 use App\Models\Work;
@@ -108,29 +107,30 @@ class ProcessReview implements ShouldQueue
             $openLibraryAuthorID = str_replace('/authors/', '', $workAuthor->author->key);
 
             //First of all i need to check if the given author is already present in the author table
-            $savedAuthor = Author::where( "openlibrary_author_id", $openLibraryAuthorID )->first();
-            if( !empty( $savedAuthor ) ) {
-                $work->authors()->attach( $savedAuthor->id );
+            $savedAuthor = Author::where('openlibrary_author_id', $openLibraryAuthorID)->first();
+            if (! empty($savedAuthor)) {
+                $work->authors()->attach($savedAuthor->id);
+
                 continue;
             }
 
             //If not the first thing to do is to go and get all the author info
-            $authorInfo = $openLibraryClass->getAuthorInfo( $openLibraryAuthorID );
+            $authorInfo = $openLibraryClass->getAuthorInfo($openLibraryAuthorID);
 
             //Create a record for the new author
             $author = Author::create([
-                "openlibrary_author_id" => $openLibraryAuthorID,
-                "name" => $authorInfo->name,
-                "bio" => $authorInfo->name,
-                "birth_date" => date( "Y-m-d", strtotime( "birth_date" ) ) ?? null,
-                "death_date" => date( "Y-m-d", strtotime( "death_date" ) ) ?? null,
+                'openlibrary_author_id' => $openLibraryAuthorID,
+                'name' => $authorInfo->name,
+                'bio' => $authorInfo->name,
+                'birth_date' => date('Y-m-d', strtotime('birth_date')) ?? null,
+                'death_date' => date('Y-m-d', strtotime('death_date')) ?? null,
             ]);
 
             //Save all the author photos
             foreach ($authorInfo->photos as $photo) {
 
                 // For some reason some of the photos are -1 from the API endpoint
-                if( $photo == -1 ) {
+                if ($photo == -1) {
                     continue;
                 }
 
@@ -150,11 +150,11 @@ class ProcessReview implements ShouldQueue
 
             //Save all the useful links
             $usefulLinks = $authorInfo->links ?? [];
-            foreach ( $usefulLinks as $link ) {
+            foreach ($usefulLinks as $link) {
                 DB::table('author_useful_links')->insert([
                     'author_id' => $author->id,
                     'title' => $link->title,
-                    "link" => $link->url
+                    'link' => $link->url,
                 ]);
             }
 
