@@ -2,15 +2,10 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\ReviewTest;
 
-class PostReviewTest extends TestCase
+class PostReviewTest extends ReviewTest
 {
-    private static string $baseEndpoint = '/api/review';
-
-    private static string $realWorkID = 'OL27448W';
-
-    private static string $fakeWorkID = 'XXX';
 
     public function test_post_review_return_error_with_parameter_missing(): void
     {
