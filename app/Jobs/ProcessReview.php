@@ -121,7 +121,7 @@ class ProcessReview implements ShouldQueue
             $author = Author::create([
                 'openlibrary_author_id' => $openLibraryAuthorID,
                 'name' => $authorInfo->name,
-                'bio' => $authorInfo->name,
+                'bio' => $authorInfo->bio,
                 'birth_date' => date('Y-m-d', strtotime('birth_date')) ?? null,
                 'death_date' => date('Y-m-d', strtotime('death_date')) ?? null,
             ]);
