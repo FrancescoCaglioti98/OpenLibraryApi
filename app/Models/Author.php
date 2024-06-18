@@ -93,4 +93,15 @@ class Author extends Model
     {
         return $this->belongsToMany(Work::class);
     }
+
+    public function getGeneralInfo(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'openlibrary_id' => $this->openlibrary_author_id,
+            'link' => $_ENV['APP_URL'].'/api/author/' . $this->id,
+        ];
+    }
+
 }

@@ -19,17 +19,12 @@ class ReviewResource extends JsonResource
             'id' => $this->work->id,
             'book' => $this->work->title,
             'openlibrary_id' => $this->work->openlibrary_work_id,
-            'link' => $_ENV['APP_URL'].'/api/book/'.$this->work->id,
+            'link' => $_ENV['APP_URL'].'/api/work/'.$this->work->id,
         ];
 
         $authors = [];
         foreach ($this->work->authors as $author) {
-            $authors[] = [
-                'id' => $author->id,
-                'name' => $author->name,
-                'openlibrary_id' => $author->openlibrary_author_id,
-                'link' => $_ENV['APP_URL'].'/api/author/'.$author->id,
-            ];
+            $authors[] = $author->getGeneralInfo();
         }
 
         return [
