@@ -48,7 +48,8 @@ class ProcessReview implements ShouldQueue
         ]);
 
         //Second Step: Save all the links
-        foreach ($workInfo->links as $link) {
+        $workLinks = $workInfo->links ?? [];
+        foreach ( $workLinks as $link) {
             DB::table('work_links')->insert([
                 'work_id' => $work->id,
                 'title' => $link->title,
@@ -122,8 +123,8 @@ class ProcessReview implements ShouldQueue
                 'openlibrary_author_id' => $openLibraryAuthorID,
                 'name' => $authorInfo->name,
                 'bio' => $authorInfo->bio,
-                'birth_date' => date('Y-m-d', strtotime('birth_date')) ?? null,
-                'death_date' => date('Y-m-d', strtotime('death_date')) ?? null,
+                'birth_date' => date('Y-m-d', strtotime($authorInfo->birth_date)) ?? null,
+                'death_date' => date('Y-m-d', strtotime($authorInfo->death_date)) ?? null,
             ]);
 
             //Save all the author photos
