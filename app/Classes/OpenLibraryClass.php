@@ -17,7 +17,7 @@ class OpenLibraryClass
 
     public function getWorkInfo(string $openLibraryWorkID)
     {
-        $url = $_ENV['OPENLIBRARY_WORK_INFO_ENDPOINT'].$openLibraryWorkID.'.json';
+        $url = env( 'OPENLIBRARY_WORK_INFO_ENDPOINT' ) . $openLibraryWorkID.'.json';
         $request = CurlRequest::Get($url, []);
 
         return $request['body'];
@@ -25,7 +25,7 @@ class OpenLibraryClass
 
     public function getAuthorInfo( string $openLibraryAuthorID )
     {
-        $url = $_ENV['OPENLIBRARY_AUTHOR_INFO_ENDPOINT'].$openLibraryAuthorID.'.json';
+        $url = env( 'OPENLIBRARY_AUTHOR_INFO_ENDPOINT' ) . $openLibraryAuthorID.'.json';
         $request = CurlRequest::Get($url, []);
 
         return $request['body'];

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Classes\CurlRequest;
 use App\Http\Requests\ReviewRequest;
+use App\Http\Resources\ReviewResource;
 use App\Jobs\ProcessReview;
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReviewController extends Controller
 {
@@ -60,6 +62,31 @@ class ReviewController extends Controller
             201
         );
 
+    }
+
+    public function getReview( int $reviewID ): JsonResponse|ReviewResource
+    {
+
+        $resultReview = Review::where( "id", $reviewID )->first();
+        if( empty( $resultReview ) ) {
+            return response()->json(
+                [
+                    "Unknown reviewID"
+                ],
+                404
+            );
+        }
+
+        if( $resultReview->review_status != 'DONE' ) {
+            return response()->json(
+                [],
+                202
+            );
+        }
+
+        $review = Review::where( "id", $reviewID )->first();
+
+        return new ReviewResource( $review );
     }
 
     private function checkIfValidWorkID(string $workID): bool

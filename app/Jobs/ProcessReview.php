@@ -110,7 +110,7 @@ class ProcessReview implements ShouldQueue
             //First of all i need to check if the given author is already present in the author table
             $savedAuthor = Author::where( "openlibrary_author_id", $openLibraryAuthorID )->first();
             if( !empty( $savedAuthor ) ) {
-                $work->setAuthor( $savedAuthor->id );
+                $work->authors()->attach( $savedAuthor->id );
                 continue;
             }
 
@@ -154,11 +154,11 @@ class ProcessReview implements ShouldQueue
                 DB::table('author_useful_links')->insert([
                     'author_id' => $author->id,
                     'title' => $link->title,
-                    "link" => $link->link
+                    "link" => $link->url
                 ]);
             }
 
-            $work->setAuthor( $author->id );
+            $work->authors()->attach($author->id);
 
         }
 

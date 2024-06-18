@@ -6,6 +6,8 @@ use App\Classes\OpenLibraryClass;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Work extends Model
@@ -146,12 +148,8 @@ class Work extends Model
         );
     }
 
-    public function setAuthor( $authorID ): void
+    public function authors(): BelongsToMany
     {
-        DB::table( "works_to_authors" )->insert([
-            "work_id" => $this->id,
-            "author_id" => $authorID
-        ]);
+        return $this->belongsToMany( Author::class );
     }
-
 }

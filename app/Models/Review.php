@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Review extends Model
 {
@@ -19,4 +20,10 @@ class Review extends Model
         'score',
         'review_status',
     ];
+
+    public function work(): HasOne
+    {
+        return $this->hasOne(Work::class, 'openlibrary_work_id', 'openlibrary_work_id');
+    }
+
 }
