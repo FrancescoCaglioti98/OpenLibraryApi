@@ -151,4 +151,14 @@ class Work extends Model
     {
         return $this->belongsToMany(Author::class);
     }
+
+    public function getGeneralInfo(): array
+    {
+        return [
+            'id' => $this->id,
+            'openlibrary_id' => $this->openlibrary_work_id,
+            'title' => $this->title,
+            'link' => $_ENV['APP_URL'].'/api/work/' . $this->id,
+        ];
+    }
 }

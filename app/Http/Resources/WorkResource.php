@@ -21,7 +21,7 @@ class WorkResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'work_id' => $this->openlibrary_work_id,
+            'openlibrary_id' => $this->openlibrary_work_id,
             'title' => $this->title,
             'description' => $this->description,
             'first_publish' => $this->first_publish,
