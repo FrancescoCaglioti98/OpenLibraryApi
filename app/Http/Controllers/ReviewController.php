@@ -141,4 +141,31 @@ class ReviewController extends Controller
         );
 
     }
+
+    public function deleteReview( int $reviewID ): JsonResponse
+    {
+
+        $review = Review::where( "id", $reviewID )->first();
+        if (empty($review)) {
+            return response()->json( status: 404 );
+        }
+
+        //First of all i need to delete the work
+        $review->work->delete();
+
+        // Then i can delete the review
+        if( $review->delete() ) {
+            return response()->json(status: 200);
+        }
+
+        return response()->json(
+            [
+                'Error in the review delete',
+            ],
+            500
+        );
+
+
+    }
+
 }
