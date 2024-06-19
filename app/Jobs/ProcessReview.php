@@ -49,7 +49,7 @@ class ProcessReview implements ShouldQueue
 
         //Second Step: Save all the links
         $workLinks = $workInfo->links ?? [];
-        foreach ( $workLinks as $link) {
+        foreach ($workLinks as $link) {
             DB::table('work_links')->insert([
                 'work_id' => $work->id,
                 'title' => $link->title,

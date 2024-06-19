@@ -31,7 +31,7 @@ class WorkResource extends JsonResource
             'subject_people' => $this->subject_people,
             'subject_times' => $this->subject_times,
             'subject_places' => $this->subject_places,
-            "authors" => $authors,
+            'authors' => $authors,
         ];
     }
 }

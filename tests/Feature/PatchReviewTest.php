@@ -6,18 +6,16 @@ use Tests\ReviewTest;
 
 class PatchReviewTest extends ReviewTest
 {
-
     private static int $fakeReviewID = 88;
-
 
     public function test_put_review_return_error_404_with_unknown_id()
     {
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 'review' => 'Some Review',
-                "score" => 3
+                'score' => 3,
             ],
             [
                 'Accept' => 'application/json',
@@ -30,7 +28,7 @@ class PatchReviewTest extends ReviewTest
     {
         //All parameter Missing
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [],
             [
                 'Accept' => 'application/json',
@@ -39,7 +37,7 @@ class PatchReviewTest extends ReviewTest
 
         //WorkID parameter Missing
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 //"work_id" => self::$realWorkID,
                 'review' => 'Some Review',
@@ -52,7 +50,7 @@ class PatchReviewTest extends ReviewTest
 
         //Review parameter Missing
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 //"review" => "Some Review",
@@ -65,7 +63,7 @@ class PatchReviewTest extends ReviewTest
 
         //Score parameter Missing
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 'review' => 'Some Review',
@@ -82,7 +80,7 @@ class PatchReviewTest extends ReviewTest
 
         //Empty Review
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 'review' => '',
@@ -95,7 +93,7 @@ class PatchReviewTest extends ReviewTest
 
         //Score Parameter over 6
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 'review' => 'Some Review',
@@ -107,7 +105,7 @@ class PatchReviewTest extends ReviewTest
         )->assertStatus(422);
         //Score Parameter under 1
         $this->put(
-            self::$baseEndpoint . '/' . self::$fakeReviewID,
+            self::$baseEndpoint.'/'.self::$fakeReviewID,
             [
                 'work_id' => self::$realWorkID,
                 'review' => 'Some Review',
@@ -119,5 +117,4 @@ class PatchReviewTest extends ReviewTest
         )->assertStatus(422);
 
     }
-
 }

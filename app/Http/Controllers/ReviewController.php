@@ -18,7 +18,7 @@ class ReviewController extends Controller
 
         //First of all i need to check that the WorkID is a valid identifier
         $existWorkID = $this->checkIfValidWorkID($values['work_id']);
-        if (!$existWorkID) {
+        if (! $existWorkID) {
             return response()->json(
                 [
                     'error' => 'Wrong work_id given',
@@ -29,7 +29,7 @@ class ReviewController extends Controller
 
         // I need to verify if the WorkID has already a review
         $result = Review::where('openlibrary_work_id', $values['work_id'])->first();
-        if (!empty($result)) {
+        if (! empty($result)) {
             return response()->json(
                 [
                     'error' => 'work_id already reviewed',
@@ -66,7 +66,7 @@ class ReviewController extends Controller
     private function checkIfValidWorkID(string $workID): bool
     {
 
-        $url = $_ENV['OPENLIBRARY_WORK_INFO_ENDPOINT'] . $workID . '.json';
+        $url = $_ENV['OPENLIBRARY_WORK_INFO_ENDPOINT'].$workID.'.json';
 
         $request = CurlRequest::Get($url, []);
 
@@ -124,7 +124,7 @@ class ReviewController extends Controller
             'openlibrary_work_id' => $validatedValues['work_id'],
         ]);
 
-        if (!$updated) {
+        if (! $updated) {
             return response()->json(
                 [
                     'Error in the Review Update',
@@ -142,19 +142,19 @@ class ReviewController extends Controller
 
     }
 
-    public function deleteReview( int $reviewID ): JsonResponse
+    public function deleteReview(int $reviewID): JsonResponse
     {
 
-        $review = Review::where( "id", $reviewID )->first();
+        $review = Review::where('id', $reviewID)->first();
         if (empty($review)) {
-            return response()->json( status: 404 );
+            return response()->json(status: 404);
         }
 
         //First of all i need to delete the work
         $review->work->delete();
 
         // Then i can delete the review
-        if( $review->delete() ) {
+        if ($review->delete()) {
             return response()->json(status: 200);
         }
 
@@ -165,7 +165,5 @@ class ReviewController extends Controller
             500
         );
 
-
     }
-
 }

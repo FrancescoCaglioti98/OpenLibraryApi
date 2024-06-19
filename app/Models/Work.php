@@ -158,7 +158,7 @@ class Work extends Model
             'id' => $this->id,
             'openlibrary_id' => $this->openlibrary_work_id,
             'title' => $this->title,
-            'link' => $_ENV['APP_URL'].'/api/work/' . $this->id,
+            'link' => $_ENV['APP_URL'].'/api/work/'.$this->id,
         ];
     }
 }

@@ -23,15 +23,15 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('author_photos', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained('authors')->onDelete("cascade");
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
             $table->string('photo_id', 15);
         });
         Schema::create('author_alternative_names', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained('authors')->onDelete("cascade");
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
             $table->string('name', 250);
         });
         Schema::create('author_useful_links', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained('authors')->onDelete("cascade");
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
             $table->string('title', 50)->nullable(false);
             $table->string('link', 100)->nullable(false);
         });

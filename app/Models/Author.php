@@ -100,8 +100,7 @@ class Author extends Model
             'id' => $this->id,
             'name' => $this->name,
             'openlibrary_id' => $this->openlibrary_author_id,
-            'link' => $_ENV['APP_URL'].'/api/author/' . $this->id,
+            'link' => $_ENV['APP_URL'].'/api/author/'.$this->id,
         ];
     }
-
 }
