@@ -55,13 +55,67 @@ Per qualunque necessità potete contattarmi.
 
 Una volta scaricata la repository serviranno alcuni comandi.
 ```bash
-docker compose run composer install
+docker compose run --rm composer install
 ```
 Questo comando farà partire un container di servizio che serve solo per poter lavorare con composer\
 e permetterà di installare i pacchetti della cartella vendor.
 
+Successivamente, sarà necessario creare il file .env
+```bash
+cp .env.example .env
+```
+E configurare i parametri di connessione al container di MySQL.\
+In questo caso i parametri saranno visionabili e modificabili [nel file](./env/mysql.env)
 
-
+Infine:
+```bash
+docker compose up -d server php mysql 
+```
+Permetterà di far partire i servizi essenziali al funzionamento, cioè:
+- NGINX
+- PHP
+- MySQL
 
 
 # Utilizzare il servizio
+
+> [!NOTE]
+> Da questo momento in poi fornirò i comandi per entrambe le casistiche, in quanto la logica di funzionamento è la stessa
+
+Prima di tutto ho fornito un paio di chiamate di esempio tramite Postman, disponibili [al file](./Postman/OpenLibraryAPI.postman_collection.json)
+
+Dopo aver utilizzato le chiamate API di:
+```bash
+GET /search
+POST /review
+```
+
+Sarà necessario far partire lo schedulatore di Laravel che lavora i Job asincroni.
+Il comando sarà:
+```bash
+//DOCKER
+docker compose run --rm artisan queue:work
+
+//DIRETTO
+php artisan queue:work
+```
+
+Una volta fatto ciò, se la lavorazione è andata a buon fine, sarà possibile recuperare le informazioni acquisite tramite l'endpoint:
+```bash
+GET /review/{reviewID}
+```
+A questo punto verranno consegnate anche le informazioni per recuperare i dati riguardanti Autori e Work. Precisamente dall'endpoint:
+```bash
+GET /author/{authorID}
+GET /work/{workID}
+```
+
+Se, invece, si desidera far partire gli Unit test sarà possibile lanciare uno dei due comandi, in base a quanto è stato configurato.
+```bash
+//DOCKER
+docker compose run --rm artisan test
+
+//DIRETTO
+php artisan test
+```
+
