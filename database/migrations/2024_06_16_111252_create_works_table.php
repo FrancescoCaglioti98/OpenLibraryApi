@@ -22,28 +22,28 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('work_links', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->string('title', 250);
             $table->string('link', 250);
         });
         Schema::create('work_covers', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->string('cover', 25);
         });
         Schema::create('work_subject_peoples', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->string('people', 50);
         });
         Schema::create('work_subjects', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->text('subject')->nullable(false);
         });
         Schema::create('work_subject_times', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->string('time', 100)->nullable(false);
         });
         Schema::create('work_subject_places', function (Blueprint $table) {
-            $table->foreignId('work_id')->constrained('works');
+            $table->foreignId('work_id')->constrained('works')->onDelete("cascade");
             $table->string('place', 100)->nullable(false);
         });
     }
