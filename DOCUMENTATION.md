@@ -85,8 +85,10 @@ Permetterà di far partire i servizi essenziali al funzionamento, cioè:
 Prima di tutto ho fornito un paio di chiamate di esempio tramite Postman, disponibili [al file](./Postman/OpenLibraryAPI.postman_collection.json)
 
 Dopo aver utilizzato le chiamate API di:
-```bash
+```http request
 GET /search
+```
+```http request
 POST /review
 ```
 
@@ -101,16 +103,19 @@ php artisan queue:work
 ```
 
 Una volta fatto ciò, se la lavorazione è andata a buon fine, sarà possibile recuperare le informazioni acquisite tramite l'endpoint:
-```bash
+```http request
 GET /review/{reviewID}
 ```
-A questo punto verranno consegnate anche le informazioni per recuperare i dati riguardanti Autori e Work. Precisamente dall'endpoint:
-```bash
+A questo punto verranno consegnate anche le informazioni per recuperare i dati riguardanti Autori e Work. Precisamente dagli endpoint:
+```http request
 GET /author/{authorID}
+```
+```http request
 GET /work/{workID}
 ```
 
-Se, invece, si desidera far partire gli Unit test sarà possibile lanciare uno dei due comandi, in base a quanto è stato configurato.
+## Test automatici
+Se si desiderasse far partire gli Unit test sarà possibile lanciare uno dei due comandi, in base a quanto è stato configurato.
 ```bash
 //DOCKER
 docker compose run --rm artisan test
@@ -119,3 +124,12 @@ docker compose run --rm artisan test
 php artisan test
 ```
 
+## Code Style
+Infine, per poter avere uno stile di sviluppo uguale per tutta la durata ho deciso di utilizzare [Pint di Laravel](https://laravel.com/docs/11.x/pint).
+Si tratta di un pacchetto che è stato creato sulla base di CS-FIXER.
+
+Per poter lanciare il comando è necessario:
+```bash
+vendor/bin/pint
+```
+(Va da se che è possibile utilizzarlo solo dopo l'installazione tramite composer)
