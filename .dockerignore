@@ -1,6 +1,7 @@
 docker-compose.yaml
-README.md,
+README.md
 DOCUMENTATION.md
 .github
 .gitattributes
 .editorconfig
+vendor
