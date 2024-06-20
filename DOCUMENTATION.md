@@ -1,7 +1,7 @@
 # Installazione
 
 Ho provato a utilizzare docker per consentire il testing e l'installazione di questa repository.\
-Purtroppo, avendo un computer Windows con WSL sopra, docker funziona molto lentamente con i container basati su PHP e non sono riuscito in alcun modo a sistemarlo.\
+Purtroppo, avendo un computer Windows con WSL sopra, docker funziona molto lentamente con i container basati su PHP e non sono riuscito in alcun modo a sistemarlo o a verificarne il corretto funzionamento.\
 In ogni caso ho lasciato tutti i file nel caso fosse necessario provare. Lascio tutte le istruzioni [qua](#installazione-con-docker).
 
 Mentre invece, per un'installazione più tradizionale di Laravel lascio [di seguito le istruzioni](#installazione-tradizionale).
